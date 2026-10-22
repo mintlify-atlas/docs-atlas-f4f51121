@@ -1,0 +1,34 @@
+{
+  "projectType": "general",
+  "projectName": "your-repo",
+  "projectDescription": "A minimal Go program that prints a Hello World greeting.",
+  "theme": "palm",
+  "primaryColor": "#00ADD8",
+  "lightColor": "#5DC9E2",
+  "darkColor": "#007D9C",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": ["introduction", "quickstart"]
+      },
+      {
+        "group": "Guides",
+        "pages": ["guides/building", "guides/running"]
+      },
+      {
+        "group": "Reference",
+        "pages": ["reference/code", "reference/faq"]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Minimal Go entry point",
+    "Unicode-aware output (Hello, 世界)",
+    "Single-file project structure"
+  ],
+  "publicApiSurface": [
+    "main() — program entry point",
+    "fmt.Println output: \"Hello, 世界\""
+  ]
+}

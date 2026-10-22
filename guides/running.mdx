@@ -1,0 +1,86 @@
+---
+title: "Run the your-repo Program"
+sidebarTitle: "Running"
+description: "Execute the your-repo program with go run or a compiled binary, understand its UTF-8 output, and inspect exit codes on Unix and Windows."
+---
+
+your-repo prints a short greeting to standard output and exits. You can run it directly from source with `go run`, or compile it first and execute the resulting binary. Both approaches produce identical output.
+
+## Running with go run
+
+`go run` compiles and executes the source file in one step — no separate build stage is needed:
+
+```bash
+go run hello.go
+```
+
+Expected output:
+
+```bash
+Hello, 世界
+```
+
+## Running the compiled binary
+
+After building the binary with `go build` (see [Building](/guides/building)), execute it directly:
+
+```bash
+# Linux / macOS
+./hello
+```
+
+```bash
+# Windows
+hello.exe
+```
+
+Both commands print the same greeting:
+
+```bash
+Hello, 世界
+```
+
+## Understanding the output
+
+The output `Hello, 世界` contains two parts:
+
+- **`Hello, `** — plain ASCII text.
+- **`世界`** — the Chinese (and Japanese) word for "world", pronounced *shìjiè* in Mandarin.
+
+A few things make this work seamlessly in Go:
+
+- **UTF-8 by default** — Go source files are always UTF-8 encoded. String literals may contain any valid Unicode character without any special imports or declarations.
+- **`fmt.Println`** — writes the string to **stdout** followed by a newline (`\n`). The terminal renders the Unicode code points as long as it supports UTF-8, which all modern terminals do.
+
+## Exit codes
+
+your-repo exits with code **0** on success, which is the Unix/POSIX convention for "no error". You can verify the exit code immediately after running the program:
+
+<CodeGroup>
+
+```bash Unix / macOS
+./hello
+echo $?
+```
+
+```bash Windows
+hello.exe
+echo %ERRORLEVEL%
+```
+
+</CodeGroup>
+
+Both commands print `0` after the greeting, confirming the program completed without errors.
+
+<Note>
+  `fmt.Println` writes to **stdout** (file descriptor 1). If you need to write to **stderr** instead — for example, to emit error messages that are separate from normal output — use `fmt.Fprintln(os.Stderr, ...)`:
+
+  ```go
+  import (
+      "fmt"
+      "os"
+  )
+
+  fmt.Fprintln(os.Stderr, "something went wrong")
+  ```
+</Note>

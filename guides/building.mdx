@@ -1,0 +1,76 @@
+---
+title: "Build your-repo for Any Platform"
+sidebarTitle: "Building"
+description: "Learn how to compile the your-repo program natively and cross-compile it for Linux, macOS, and Windows using Go's built-in toolchain."
+---
+
+your-repo is a single-file Go program, which means the entire build process is a single command. Go compiles to a self-contained native binary, so no runtime or virtual machine is needed on the target machine.
+
+## Native build
+
+To compile the program for your current operating system and architecture, run:
+
+```bash
+go build -o hello hello.go
+```
+
+This produces an executable named `hello` (or `hello.exe` on Windows) in the current directory. The binary is statically linked and ready to run immediately.
+
+## Cross-compilation
+
+Go has first-class support for cross-compilation via two environment variables:
+
+- **`GOOS`** — the target operating system (e.g. `linux`, `darwin`, `windows`)
+- **`GOARCH`** — the target CPU architecture (e.g. `amd64`, `arm64`, `386`)
+
+Set them inline before `go build` to produce a binary for any supported platform:
+
+| Platform | GOOS | GOARCH | Example command |
+|---|---|---|---|
+| Linux (64-bit) | `linux` | `amd64` | `GOOS=linux GOARCH=amd64 go build -o hello-linux hello.go` |
+| macOS (Apple Silicon) | `darwin` | `arm64` | `GOOS=darwin GOARCH=arm64 go build -o hello-mac hello.go` |
+| Windows (64-bit) | `windows` | `amd64` | `GOOS=windows GOARCH=amd64 go build -o hello.exe hello.go` |
+
+For example, to build a Linux amd64 binary from any machine:
+
+```bash
+GOOS=linux GOARCH=amd64 go build -o hello-linux hello.go
+```
+
+```bash
+GOOS=darwin GOARCH=arm64 go build -o hello-mac hello.go
+```
+
+```bash
+GOOS=windows GOARCH=amd64 go build -o hello.exe hello.go
+```
+
+## Build flags
+
+Two flags are especially useful during development:
+
+- **`-o <name>`** — sets the output binary name. Without it, Go defaults to the module name or the source file stem.
+
+  ```bash
+  go build -o my-hello hello.go
+  ```
+
+- **`-v`** — enables verbose output, printing the names of packages as they are compiled. Helpful for understanding what is being rebuilt.
+
+  ```bash
+  go build -v -o hello hello.go
+  ```
+
+You can combine flags freely:
+
+```bash
+GOOS=linux GOARCH=amd64 go build -v -o hello-linux hello.go
+```
+
+<Tip>
+  Go produces **fully static binaries** with no runtime dependencies. You can copy the compiled binary directly to a target machine and run it — there is no need to install Go, a runtime, or any shared libraries on that machine.
+</Tip>
+
+<Note>
+  your-repo has no external dependencies, so `go mod` initialisation is not required. Both `go build` and `go run` work directly against the source file without a `go.mod` file.
+</Note>

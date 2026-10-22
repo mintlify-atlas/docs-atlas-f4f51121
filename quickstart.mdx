@@ -1,47 +1,86 @@
 ---
-title: "Quickstart"
-description: "Begin with a guide on the fastest path to a successful outcome"
+title: "Get Started with your-repo"
+sidebarTitle: "Quickstart"
+description: "Clone your-repo, run the Go program directly with go run, and build a standalone binary — all in under five minutes on any platform."
 ---
 
-Describe how someone begins using your product. What is the first thing they need to do? Are there any prerequisites?
-
-A quickstart should take someone from zero to using your product. They'll get a quick win and a sense of what they can accomplish.
+This guide walks you through everything you need to get **your-repo** running on your machine. By the end you will have cloned the repository, executed the program, and produced a standalone binary — all using standard Go toolchain commands.
 
 ## Prerequisites
 
-Before you begin, you must have:
+Before you begin, make sure the following tools are available on your system:
 
-- Requirement one (for example, Node.js 18+, a free account, an API key)
-- Requirement two (for example, a compatible device, a compatible browser, a compatible operating system)
+<Note>
+  **Go 1.18 or later** is required. Download the latest stable release from
+  [go.dev/dl](https://go.dev/dl) and follow the installation instructions for
+  your operating system. Verify your installation with `go version`. You will
+  also need **git** to clone the repository.
+</Note>
 
-## Get started
+## Steps
 
 <Steps>
-  <Step title="Install">
-    Describe how to install your product or sign up.
+  <Step title="Clone the repository">
+    Clone **your-repo** from GitHub and change into the project directory:
 
     ```bash
-    npm install your-package
+    git clone https://github.com/your-org/your-repo.git && cd your-repo
     ```
   </Step>
-  <Step title="Configure">
-    Describe any setup or configuration needed before first use.
+
+  <Step title="Run directly with go run">
+    Use `go run` to compile and execute the program in a single command — no intermediate binary is written to disk:
 
     ```bash
-    your-cli init
+    go run hello.go
+    ```
+
+    Expected output:
+
+    ```
+    Hello, 世界
     ```
   </Step>
-  <Step title="Run it">
-    Show the first thing a user does to see it working.
+
+  <Step title="Build a standalone binary">
+    Use `go build` to compile the program into a reusable executable named `hello`:
 
     ```bash
-    your-cli start
+    go build -o hello hello.go
+    ```
+
+    Run the resulting binary:
+
+    ```bash
+    ./hello
+    ```
+
+    Expected output:
+
+    ```
+    Hello, 世界
     ```
   </Step>
 </Steps>
 
 <Tip>
-  Give people a way to get help. This could be a link to a support page, a chat with a customer support agent, or a forum for your product.
-
-  Example: Need help? Reach out to us at [support@yourcompany.com](mailto:support@yourcompany.com).
+  `go run` compiles and executes your code in one step without leaving a binary
+  on disk — perfect for quick iterations during development. Use `go build` when
+  you need a standalone executable to distribute, deploy to a server, or run
+  repeatedly without incurring compilation overhead.
 </Tip>
+
+## Both Approaches Side by Side
+
+<CodeGroup>
+
+```bash go run
+go run hello.go
+```
+
+```bash go build
+go build -o hello hello.go
+./hello
+```
+
+</CodeGroup>

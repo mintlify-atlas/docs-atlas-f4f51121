@@ -1,0 +1,141 @@
+---
+title: "Frequently Asked Questions — your-repo"
+sidebarTitle: "FAQ"
+description: "Answers to common questions about your-repo: Unicode output, running and building the program, managing modules, dependencies, and Go version requirements."
+---
+
+This page collects answers to the most common questions about **your-repo** — the minimal Go program defined in `hello.go`. If you are just getting started, the questions below cover everything from what the output means to how to extend the project with external dependencies.
+
+<AccordionGroup>
+  <Accordion title='What does `世界` mean?'>
+    `世界` (pronounced *shìjiè*) is a Chinese and Japanese word meaning **"world"**. The phrase `Hello, 世界` is Go's traditional Hello World program — a direct nod to the language's Chinese-speaking contributor community and a demonstration that Go source files support Unicode out of the box.
+
+    You can verify the translation yourself:
+
+    ```
+    Hello, 世界  →  Hello, World
+    ```
+  </Accordion>
+
+  <Accordion title="Do I need to initialize a Go module?">
+    **No.** For a single-file program with no external dependencies you can run or build `hello.go` directly without creating a `go.mod` file:
+
+    ```bash
+    # Run without compiling a persistent binary
+    go run hello.go
+
+    # Compile a binary in the current directory
+    go build
+    ```
+
+    Module initialization (`go mod init`) is only required when you need to manage external dependencies or when working inside a larger workspace.
+  </Accordion>
+
+  <Accordion title="How do I add dependencies?">
+    If you decide to import third-party packages, follow these steps:
+
+    1. **Initialize a module** in the project root:
+
+       ```bash
+       go mod init your-repo
+       ```
+
+       This creates a `go.mod` file that records the module path and Go version.
+
+    2. **Add a package** with `go get`:
+
+       ```bash
+       go get github.com/some/package
+       ```
+
+       Go will update `go.mod` and create (or update) `go.sum` with the cryptographic checksums of the downloaded modules.
+
+    3. **Import** the package in your source file and run `go build` or `go run` as normal.
+  </Accordion>
+
+  <Accordion title="Why does `go run` not produce a binary?">
+    `go run` is designed for **quick iteration**. It compiles the program to a temporary directory (usually under the OS temp path) and executes it immediately — the temporary binary is deleted when the process exits.
+
+    To produce a **persistent binary** that you can distribute or run repeatedly without recompiling, use `go build`:
+
+    ```bash
+    # Produces ./your-repo (or your-repo.exe on Windows)
+    go build
+
+    # Run the compiled binary
+    ./your-repo
+    ```
+
+    `go build` places the binary in the current directory by default. Use the `-o` flag to specify a different output path:
+
+    ```bash
+    go build -o bin/hello
+    ```
+  </Accordion>
+
+  <Accordion title="What Go version does this require?">
+    **Any modern Go release (1.13 or later)** works for this program. `hello.go` uses only:
+
+    - The `package main` declaration
+    - The `fmt` standard-library package
+    - A UTF-8 string literal
+
+    None of these features are version-specific. You can check your installed Go version with:
+
+    ```bash
+    go version
+    ```
+
+    Visit [go.dev/dl](https://go.dev/dl/) to download the latest stable release.
+  </Accordion>
+
+  <Accordion title="Can I change the output message?">
+    Yes! Simply edit the string literal passed to `fmt.Println` in `hello.go`:
+
+    ```go
+    // Before
+    fmt.Println("Hello, 世界")
+
+    // After — change to whatever you like
+    fmt.Println("Hello, Go developer!")
+    ```
+
+    Save the file and re-run the program:
+
+    ```bash
+    go run hello.go
+    ```
+
+    The new message will be printed to stdout.
+  </Accordion>
+
+  <Accordion title="How do I write to stderr instead of stdout?">
+    Use `fmt.Fprintln` with `os.Stderr` as the first argument. You will need to add `"os"` to your imports:
+
+    ```go
+    package main
+
+    import (
+    	"fmt"
+    	"os"
+    )
+
+    func main() {
+    	fmt.Fprintln(os.Stderr, "Hello, 世界")
+    }
+    ```
+
+    `fmt.Fprintln` accepts an `io.Writer` as its first argument, so you can redirect output to any destination — a file, a network connection, a buffer, etc. — by passing the appropriate writer.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+<CardGroup cols={2}>
+  <Card title="Introduction" icon="book-open" href="/introduction">
+    New to your-repo? Start here for an overview of the project and its goals.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Get up and running in minutes — clone, build, and run your first output.
+  </Card>
+</CardGroup>
