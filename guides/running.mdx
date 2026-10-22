@@ -1,5 +1,5 @@
 ---
-title: "Run the your-repo Program"
+title: "Run the your-repo Go Program and Understand Its Output"
 sidebarTitle: "Running"
 description: "Execute the your-repo program with go run or a compiled binary, understand its UTF-8 output, and inspect exit codes on Unix and Windows."
 ---
@@ -73,14 +73,5 @@ echo %ERRORLEVEL%
 Both commands print `0` after the greeting, confirming the program completed without errors.
 
 <Note>
-  `fmt.Println` writes to **stdout** (file descriptor 1). If you need to write to **stderr** instead — for example, to emit error messages that are separate from normal output — use `fmt.Fprintln(os.Stderr, ...)`:
-
-  ```go
-  import (
-      "fmt"
-      "os"
-  )
-
-  fmt.Fprintln(os.Stderr, "something went wrong")
-  ```
+  `fmt.Println` writes to **stdout** (file descriptor 1) and appends a trailing newline. Both `go run hello.go` and the compiled binary produce byte-for-byte identical output.
 </Note>
